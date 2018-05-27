@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>폼 검증</title>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <form action="" method="post" id="testForm">
+            <table class="table table-bordered">
+                <tr>
+                    <th>제목</th>
+                    <td><input type="text" name="subject" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>이메일</th>
+                    <td><input type="text" name="email" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>지역</th>
+                    <td>
+                        <select name="division" id="" class="form-control">
+                            <option value="">선택하세요</option>
+                            <option value="서울">서울</option>
+                            <option value="수원">수원</option>
+                            <option value="인천">인천</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td>
+                        <textarea name="content" id="contentText" id="" cols="30" rows="10" class="form-control"></textarea>
+                    </td>
+                </tr>
+            </table>
+            <button class="btn btn-primary">작성하기</button>
+        </form>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#testForm').submit(function(){
+                var subjectInput = $('#testForm input[name=subject]');
+                var eamilInput = $('#testForm input[name=email]');
+                var divisionSelect = $('#testForm select[name=division]');
+                var contentInput = $('#testForm textarea[name=content]');
+
+                if(!subjectInput.val()){
+                    alert('제목 입력');
+                    subjectInput.focus();
+                    return false;
+                }
+                if (!eamilInput.val()) {
+                    alert('이메일을 입력해주세요');
+                    eamilInput.focus();
+                    return false;
+                }
+                if (!divisionSelect.val()) {
+                    alert('지역을 선택해주세요');
+                    divisionSelect.focus();
+                    return false;
+                }
+                if(!contentInput.val()){
+                    alert('내용을 입력해주세요');
+                    contentInput.focus();
+                    return false;
+                }
+
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>
