@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" style="padding:100px;">
+        <div class="colorDiv">
+            <span id="min">00</span> :
+            <span id="sec">00</span>
+        </div>
+        <div>
+            <a class="btn btn-default" id="start">시작</a>
+            <a class="btn btn-danger" id="pause">중지</a>
+            <a class="btn btn-primary" id="reset">리셋</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+    <script>
+    var Timer = {
+        isPending: false,
+        currentSec: 0,
+        currentMin: 0,
+
+        startTimer: function () {
+            if (this.isPending) {
+                this.currentSec += 1;
+                if (this.currentSec == 60) {
+                    this.currentSec = 0;
+                    this.currentMin += 1;
+                }
+
+                // String.prototype.slice(beginIndex[, endIndex]) : 문자열 잘르는 함수
+                // beginIndex에 음수가 들어갈 경우 시작 index는 strLength+beginIndex : 끝에서부터 beginIndex 개수만큼 자름
+                $('#min').html(('0' + this.currentMin).slice(-2));
+                $('#sec').html(('0' + this.currentSec).slice(-2));
+
+                // setTimeout(function(), delay)
+                // dealy ms 후에 해당 함수를 실행
+                setTimeout("Timer.startTimer()", 1000);
+            }
+        },
+
+        pauseTimer: function () {
+            this.isPending = false;
+        },
+
+        resetTimer: function () {
+            this.isPending = false;
+            this.currentSec = 0;
+            this.currentMin = 0;
+            $('#min').html("00");
+            $('#sec').html("00");
+        }
+    }
+    $(document).ready(function () {
+        $('#start').click(function () {
+            Timer.isPending = true;
+            Timer.startTimer();
+        });
+
+        $('#pause').click(function () {
+            Timer.pauseTimer();
+        });
+
+        $('#reset').click(function () {
+            Timer.resetTimer();
+        });
+    });
+    </script>
+</body>
+</html>

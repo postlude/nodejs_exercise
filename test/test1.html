@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+    <div class="test_div">
+        test
+    </div>
+<body>
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+        <script>
+        /*var ary = new Array();
+        ary[0] = 0;
+        ary[1] = 1;
+        console.log(ary[0]);
+        console.log(ary[1]);*/
+
+        /*var ary2 = [1, 2, 3];
+        for (const key in ary2) {
+            // if (object.hasOwnProperty(key)) {
+            //     const element = object[key];
+            // }
+            console.log(ary2[key]);
+        }*/
+
+        // var ary3 = new Array('test', 'test2');
+        // ary3.forEach(function (value) {
+        //     console.log(value);
+        // });
+
+        // var ob = {
+        //     numberVal: 111,
+        //     arrayVal: "zzz",
+        //     arrayList: [1, 2, 3],
+        //     speack: function () {
+        //         console.log("function");
+        //     }
+        // }
+        // for (var property in ob) {
+        //     console.log(property + "/ " + ob[property]);
+        // }
+
+        $(document).ready(function () {
+            // $('.test_div').html($('.test_div').val.slice(-2));
+            console.log($('.test_div').text('test'.slice(-3, 4)));
+        });
+    </script>
+</body>
+
+</html>
