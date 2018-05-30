@@ -4,7 +4,10 @@ var autoIncrement = require('mongoose-auto-increment');
 
 //생성할 필드명을 정한다.
 var ProductsSchema = new Schema({
-    name : String, // 제품명
+    name : {
+        type : String,
+        required : [true, '제목을 입력해주세요']
+    },
     price : Number,
     description : String,
     created_at : {
