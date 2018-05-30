@@ -1,10 +1,15 @@
 var express = require('express');
 var mongoose = require('mongoose');
+// mpromise warning 제거를 위해
+mongoose.Promise = global.Promise;
 var autoIncrement = require('mongoose-auto-increment');
-
+var path = require('path');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
 
 var app = express();
 var port = 3000;
+
 
 // db 관련
 var db = mongoose.connection;
@@ -26,6 +31,17 @@ autoIncrement.initialize(connect);
 //     res.send('test');
 // });
 // app.use('/admin', router);
+
+
+// 확장자가 ejs 로 끝나는 뷰 엔진을 추가한다.
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+
+// 미들웨어 셋팅
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 
 var admin = require('./routes/admin');
