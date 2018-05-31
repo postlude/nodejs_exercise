@@ -4,7 +4,6 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-
 //MongoDB 접속
 var mongoose = require('mongoose');
 // mongoose promise 에러 처리
@@ -41,16 +40,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use('/admin', admin);
 
-app.get('/', function(req, res){
-    res.send('first edit');
-});
+// contacts
+var contacts = require('./routes/contacts');
+app.use('/contacts', contacts);
+// 
+
+// app.get('/', function(req, res){
+//     res.send('first edit');
+// });
 
 // app.get('/admin', function(req, res){
 //     res.send('admin app');
 // });
-
-app.use('/admin', admin);
 
 app.listen( port, function(){
     console.log('Express listening on port', port);
