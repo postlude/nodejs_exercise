@@ -10,6 +10,7 @@ var ProductsModel = require('../models/ProductsModel');
 //     res.render('admin/products', { message: "test" });
 // });
 
+// products
 router.get('/products', function (req, res) {
     ProductsModel.find(function (err, products) {
         res.render('admin/products',
@@ -18,6 +19,7 @@ router.get('/products', function (req, res) {
     });
 });
 
+// write
 router.get('/products/write', function (req, res) {
     res.render('admin/form', { product: ""});
 });
@@ -33,6 +35,7 @@ router.post('/products/write', function (req, res) {
     });
 });
 
+// detail
 router.get('/products/detail/:id', function (req, res) {
     //url 에서 변수 값을 받아올떈 req.params.id 로 받아온다
     ProductsModel.findOne({ 'id': req.params.id }, function (err, product) {
@@ -40,6 +43,7 @@ router.get('/products/detail/:id', function (req, res) {
     });
 });
 
+// edit
 router.get('/products/edit/:id', function (req, res) {
     //url 에서 변수 값을 받아올떈 req.params.id 로 받아온다
     ProductsModel.findOne({ 'id': req.params.id }, function (err, product) {
@@ -59,6 +63,7 @@ router.post('/products/edit/:id', function (req, res) {
     });
 });
 
+// delete
 router.get('/products/delete/:id', function (req, res) {
     //url 에서 변수 값을 받아올떈 req.params.id 로 받아온다
     ProductsModel.remove({ 'id': req.params.id }, function (err) {
