@@ -10,7 +10,7 @@ var mongoose = require('mongoose');
 // promise 가 deprecation 되었으므로 다른것으로 교체 바람
 mongoose.Promise = global.Promise;
 var autoIncrement = require('mongoose-auto-increment');
- 
+
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
@@ -40,12 +40,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// admin
 app.use('/admin', admin);
 
 // contacts
 var contacts = require('./routes/contacts');
 app.use('/contacts', contacts);
-// 
 
 // app.get('/', function(req, res){
 //     res.send('first edit');

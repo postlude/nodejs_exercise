@@ -7,6 +7,9 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 
+// 쿠키에 대한 내용을 사용 가능하도록
+var cookieParser = require('cookie-parser');
+
 var app = express();
 var port = 3000;
 
@@ -42,6 +45,8 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+// 쿠키 사용 관련
+app.use(cookieParser());
 
 
 var admin = require('./routes/admin');
