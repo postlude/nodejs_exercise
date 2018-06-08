@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 
 var app = express();
-var port = 3000;
+var port = 4000;
 
 
 // db 관련

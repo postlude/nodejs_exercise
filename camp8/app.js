@@ -11,12 +11,12 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 var autoIncrement = require('mongoose-auto-increment');
 
+// db 접속 관련
 var db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
     console.log('mongodb connect');
 });
- 
 var connect = mongoose.connect('mongodb://127.0.0.1:27017/fastcampus', { useMongoClient: true });
 autoIncrement.initialize(connect);
 
@@ -46,6 +46,15 @@ app.use('/admin', admin);
 // contacts
 var contacts = require('./routes/contacts');
 app.use('/contacts', contacts);
+
+// path 설정, 웹 상에서 접근 가능하게 됨
+app.use('/uploads', express.static('uploads'));
+// app.use('/routes', express.static('routes'));
+
+// accounts
+var accounts = require('./routes/accounts');
+app.use('/accounts', accounts);
+
 
 // app.get('/', function(req, res){
 //     res.send('first edit');
