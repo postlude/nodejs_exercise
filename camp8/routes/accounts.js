@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var UserModel = require('../models/UserModel');
 var passwordHash = require('../libs/passwordHash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 router.get('/', function(req, res){
     res.send('account app');
@@ -24,9 +26,77 @@ router.post('/join', function(req, res){
     });
 });
 
+// passport
+// 로그인 성공시 실행되는 done(null, user) 에서 user 객체를 전달받아 세션에 저장
+passport.serializeUser(function (user, done) {
+    console.log('serializeUser');
+    done(null, user);
+});
+
+// 요청이 들어올 때마다 serializeUser에서 저장된 user와 실제 db 데이터와 비교
+passport.deserializeUser(function (user, done) {
+    var result = user;
+    result.password = "";
+    console.log('deserializeUser');
+    done(null, result);
+});
+
+// local 전략
+passport.use(new LocalStrategy({
+        usernameField: 'username', // 어떤 폼 필드로부터 아이디를 받을지 설정
+        passwordField : 'password', // 어떤 폼 필드로부터 비번을 받을지 설정
+        passReqToCallback : true // 인증을 수행하는 인증 함수로 HTTP request를 그대로  전달할지 여부를 결정한다
+    }, 
+    function (req, username, password, done) {
+        UserModel.findOne({ username : username , password : passwordHash(password) }, function (err,user) {
+            if (!user){
+                return done(null, false, { message: '아이디 또는 비밀번호 오류 입니다.' });
+            }else{
+                console.log('local strategy login success')
+                return done(null, user);
+            }
+        });
+    }
+));
+
+// passport.use(new LocalStrategy({
+//         usernameField: 'username', // 어떤 폼 필드로부터 아이디와 비번을 받을지 설정
+//         passwordField : 'password', // 어떤 폼 필드로부터 아이디와 비번을 받을지 설정
+//         passReqToCallback : false // 인증을 수행하는 인증 함수로 HTTP request를 그대로  전달할지 여부를 결정한다
+//     }, 
+//     function (username, password, done) {
+//         UserModel.findOne({ username : username , password : passwordHash(password) }, function (err,user) {
+//             if (!user){
+//                 return done(null, false, { message: '아이디 또는 비밀번호 오류 입니다.' });
+//             }else{
+//                 return done(null, user );
+//             }
+//         });
+//     }
+// ));
+
 // login
 router.get('/login', function(req, res){
-    res.render('accounts/login');
+    res.render('accounts/login', { flashMessage : req.flash().error });
+});
+
+router.post('/login' , 
+    passport.authenticate('local', { 
+        failureRedirect: '/accounts/login', 
+        failureFlash: true 
+    }),
+    function(req, res){
+        res.send('<script>alert("로그인 성공");location.href="/accounts/success";</script>');
+    }
+);
+
+router.get('/success', function(req, res){
+    res.send(req.user);
+});
+
+router.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/accounts/login');
 });
 
 module.exports = router;

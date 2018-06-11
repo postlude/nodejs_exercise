@@ -4,7 +4,12 @@ var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-//MongoDB 접속
+// flash  메시지 관련
+var flash = require('connect-flash');
+// passport 로그인 관련
+var passport = require('passport');
+var session = require('express-session');
+// MongoDB 접속
 var mongoose = require('mongoose');
 // mongoose promise 에러 처리
 // promise 가 deprecation 되었으므로 다른것으로 교체 바람
@@ -50,6 +55,22 @@ app.use('/contacts', contacts);
 // path 설정, 웹 상에서 접근 가능하게 됨
 app.use('/uploads', express.static('uploads'));
 // app.use('/routes', express.static('routes'));
+
+// session 관련 셋팅
+app.use(session({
+    secret: 'fastcampus',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 2000 * 60 * 60 //지속시간 2시간
+    }
+}));
+// passport 적용
+app.use(passport.initialize());
+app.use(passport.session());
+// 플래시 메시지 관련
+app.use(flash());
+
 
 // accounts
 var accounts = require('./routes/accounts');
