@@ -30,10 +30,12 @@ router.post('/join', function(req, res){
 // 로그인 성공시 실행되는 done(null, user) 에서 user 객체를 전달받아 세션에 저장
 passport.serializeUser(function (user, done) {
     console.log('serializeUser');
+    // 두 번째 인자의 값(user)를 세션에 저장
     done(null, user);
 });
 
-// 요청이 들어올 때마다 serializeUser에서 저장된 user와 실제 db 데이터와 비교
+// 요청이 들어올 때마다 serializeUser에서 저장된 user를 받아옴
+// Deserialize는 매번 각 페이지 접근시 마다, 세션에 저장된 사용자 정보를 읽어서 HTTP request 객체에 user라는 객체를 추가로 넣어서 리턴한다.
 passport.deserializeUser(function (user, done) {
     var result = user;
     result.password = "";
@@ -48,11 +50,11 @@ passport.use(new LocalStrategy({
         passReqToCallback : true // 인증을 수행하는 인증 함수로 HTTP request를 그대로  전달할지 여부를 결정한다
     }, 
     function (req, username, password, done) {
-        UserModel.findOne({ username : username , password : passwordHash(password) }, function (err,user) {
+        UserModel.findOne({ username : username , password : passwordHash(password) }, function (err, user) {
             if (!user){
                 return done(null, false, { message: '아이디 또는 비밀번호 오류 입니다.' });
             }else{
-                console.log('local strategy login success')
+                console.log('local strategy login success');
                 return done(null, user);
             }
         });

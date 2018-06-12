@@ -20,12 +20,12 @@ passport.use(new FacebookStrategy({
         profileFields : ['id', 'displayName', 'photos', 'email'] // 받고 싶은 필드 나열
     },
     function(accessToken, refreshToken, profile, done) {
-        //아래 하나씩 찍어보면서 데이터를 참고해주세요.
+        // 아래 하나씩 찍어보면서 데이터를 참고해주세요.
         // console.log(profile);
-        //console.log(profile.displayName);
-        //console.log(profile.emails[0].value);
-        //console.log(profile._raw);
-        //console.log(profile._json);
+        // console.log(profile.displayName);
+        // console.log(profile.emails[0].value);
+        // console.log(profile._raw);
+        // console.log(profile._json);
         UserModel.findOne({username : "fb_" + profile.id}, function(err, user){
             if(!user){ // 없으면 회원가입 후 로그인 성공페이지 이동
                 var regData = { // db에 등록 및 세션에 등록될 데이터

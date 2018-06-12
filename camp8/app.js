@@ -1,4 +1,4 @@
-/*var express = require('express');
+var express = require('express');
 var path = require('path');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
@@ -51,11 +51,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/admin', admin);
-app.use('/contacts', contacts);
-
 // path 설정, 웹 상에서 접근 가능하게 됨
 app.use('/uploads', express.static('uploads'));
+// 아래와 같이 하면 routes 디렉토리 하위의 파일 내용을 웹 상에서 전부 볼 수 있게 됨
 // app.use('/routes', express.static('routes'));
 
 // session 관련 셋팅
@@ -75,18 +73,19 @@ app.use(passport.session());
 // 플래시 메시지 관련
 app.use(flash());
 
-app.use('/accounts', accounts);
-app.use('/auth', auth);
-
-//로그인 정보 뷰에서만 변수로 셋팅, 전체 미들웨어는 router위에 두어야 에러가 안난다
+// 로그인 정보 뷰에서만 변수로 셋팅, 전체 미들웨어는 router위에 두어야 에러가 안난다
 app.use(function(req, res, next) {
     app.locals.isLogin = req.isAuthenticated();
     // app.locals.myname = "한승덕";
-    //app.locals.urlparameter = req.url; //현재 url 정보를 보내고 싶으면 이와같이 셋팅
-    //app.locals.userData = req.user; //사용 정보를 보내고 싶으면 이와같이 셋팅
+    // app.locals.urlparameter = req.url; // 현재 url 정보를 보내고 싶으면 이와같이 셋팅
+    // app.locals.userData = req.user; // 사용 정보를 보내고 싶으면 이와같이 셋팅
     next();
 });
 
+app.use('/admin', admin);
+app.use('/contacts', contacts);
+app.use('/accounts', accounts);
+app.use('/auth', auth);
 app.use('/', home);
 
 // app.get('/', function(req, res){
@@ -97,13 +96,23 @@ app.use('/', home);
 //     res.send('admin app');
 // });
 
-app.listen( port, function(){
+var server = app.listen( port, function(){
     console.log('Express listening on port', port);
-});*/
+});
+
+var listen = require('socket.io');
+var io = listen(server);
+io.on('connection', function(socket){
+    // console.log("socket 접속")
+    socket.on('client message', function(data){
+        // console.log(data);
+        // 연결된 모든 클라이언트에게 전달
+        io.emit('server message', data.message);
+    });
+});
 
 
-
-
+/*
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
@@ -201,3 +210,4 @@ io.on('connection', function(socket){
         io.emit('server message', data.message);
     });
 });
+*/
