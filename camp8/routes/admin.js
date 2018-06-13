@@ -3,6 +3,7 @@ var router = express.Router();
 var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
 var loginRequired = require('../libs/loginRequired');
+var co = require('co');
 
 // csrf 셋팅
 var csrf = require('csurf');
@@ -91,14 +92,42 @@ router.post('/products/write', loginRequired, upload.single('thumbnail'), csrfPr
 
 // detail
 router.get('/products/detail/:id', function(req, res){
+    /*
     // url에서 변수 값을 받아올 땐 req.params.id 로 받아온다.
     ProductsModel.findOne( { 'id' :  req.params.id } , function(err, product){
         // CommentsModel이 ProductsModel 밖에 있으면
         // nodejs는 비동기 식이라 값을 받아오기 전에 render로 넘어가는 케이스가 발생할 수도 있음
         // 따라서 callback function 안에 들어가는 식으로 작성해야 함
         CommentsModel.find({product_id : req.params.id}, function(err, comments){
-            res.render('admin/productsDetail', { product: product, comments : comments});  
+            res.render('admin/productsDetail', { product: product, comments : comments});
         });
+    });
+    */
+   /*
+    var getData = co(function* (){
+        // var product = yield ProductsModel.findOne({'id' :  req.params.id}).exec();
+        // var comments = yield CommentsModel.find({product_id : req.params.id}).exec();
+        // console.log(product);
+        return {
+            // product : product,
+            // comments : comments
+            product : yield ProductsModel.findOne({'id' :  req.params.id}).exec(),
+            comments : yield CommentsModel.find({product_id : req.params.id}).exec()
+        };
+    });
+    getData.then(function(result){
+        // res.send(result);
+        res.render('admin/productsDetail', { product: result.product, comments : result.comments});
+    });
+    */
+   var getData = async () => {
+        return {
+            product : await ProductsModel.findOne({'id' :  req.params.id}).exec(),
+            comments : await CommentsModel.find({product_id : req.params.id}).exec()
+        };
+    };
+    getData().then(function(result){
+        res.render('admin/productsDetail', { product: result.product, comments : result.comments});
     });
 });
 

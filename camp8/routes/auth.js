@@ -22,7 +22,7 @@ passport.use(new FacebookStrategy({
     function(accessToken, refreshToken, profile, done) {
         // 아래 하나씩 찍어보면서 데이터를 참고해주세요.
         // console.log(profile);
-        // console.log(profile.displayName);
+        // console.log('displayname : ' + profile.displayName);
         // console.log(profile.emails[0].value);
         // console.log(profile._raw);
         // console.log(profile._json);
@@ -32,7 +32,7 @@ passport.use(new FacebookStrategy({
                     username : "fb_" + profile.id,
                     password : "facebook_login", // 이렇게 두면 안되고 모델에 타입을 하나 추가하는 식으로 해야 됨
                     // 지금과 같은 식이면 아이디에 페북 아이디, 비번에 facebook_login 치면 로그인 됨
-                    displayName : profile.displayName
+                    displayname : profile.displayName
                 };
                 var User = new UserModel(regData);
                 User.save(function(err){ // db 저장
