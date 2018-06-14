@@ -68,4 +68,7 @@ router.get('/facebook/fail', function(req,res){
     res.send('facebook login fail');
 });
 
+
+// github login
+
 module.exports = router;
