@@ -3,6 +3,7 @@ var router = express.Router();
 var UserModel = require('../models/UserModel');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
+var GitHubStrategy = require('passport-github').Strategy;
 
 passport.serializeUser(function(user, done){
     done(null, user);
@@ -70,5 +71,50 @@ router.get('/facebook/fail', function(req,res){
 
 
 // github login
+passport.use(new GitHubStrategy({
+        clientID: "95d7afc8da3ffc6be568",
+        clientSecret: "aaef5cbe9e87214e28f565f99e4f452ef4c73e08",
+        callbackURL: "http://localhost:3000/auth/github/callback"
+    },
+    function(accessToken, refreshToken, profile, done) {
+        // console.log(profile);
+        UserModel.findOne({username : "gh_" + profile.id}, function(err, user){
+            if(!user){ // 없으면 회원가입 후 로그인 성공페이지 이동
+                var regData = { // db에 등록 및 세션에 등록될 데이터
+                    username : "gh_" + profile.id,
+                    password : "github_login", // 이렇게 두면 안되고 모델에 타입을 하나 추가하는 식으로 해야 됨
+                    displayname : profile.username
+                };
+                var User = new UserModel(regData);
+                User.save(function(err){ // db 저장
+                    done(null, regData); // 세션 등록
+                });
+            }else{ // 있으면 db에서 가져와서 세션등록
+                done(null, user);
+            }
+        });
+    }
+));
+
+router.get('/github', passport.authenticate('github'));
+
+router.get('/github/callback',
+    passport.authenticate('github',
+        {
+            // successRedirect : '/auth/github/success',
+            successRedirect : '/',
+            failureRedirect: '/auth/github/fail'
+        }
+    )
+);
+
+router.get('/github/success', function(req, res){
+    res.send(req.user);
+    // res.send("github login success");
+});
+
+router.get('/github/fail', function(req, res){
+    res.send('github login fail');
+});
 
 module.exports = router;
