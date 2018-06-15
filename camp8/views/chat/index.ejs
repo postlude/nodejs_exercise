@@ -37,7 +37,7 @@
 .panel-default ul { padding-left:0px; }
 .panel-default ul li { list-style:none; padding-left:0px;}
 .panel-default .panel-body {min-height:350px; max-height:350px;  overflow-y:scroll; }
-/* string 태그 뒤에 자동으로 : 붙여줌*/
+/* string 태그 뒤에 자동으로 : 붙여줌 */
 #chatWrap ul li strong::after { content: " : "; }
 @media (max-width: 768px) { 
     #userWrap { display:none; }
@@ -67,12 +67,13 @@
         // $('#chatBody').append('<li>' + data + '</li>');
         $('#chatBody').append('<li><strong>' + data.displayname +'</strong>' + data.message + '</li>');
     });
- 
+
     $(document).ready(function() {
         $('#sendForm').submit(function(){
             var $massage = $('#sendForm input[name=message]');
             socket.emit('client message', { message : $massage.val()});
             $massage.val('');
+            // return false 주지 않으면 페이지 이동 시도하게 됨
             return false;
         });
     });
