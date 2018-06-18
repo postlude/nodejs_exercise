@@ -35,6 +35,8 @@ var accounts = require('./routes/accounts');
 var auth = require('./routes/auth');
 var home = require('./routes/home');
 var chat = require('./routes/chat');
+var products = require('./routes/products');
+var cart = require('./routes/cart');
 
 var app = express();
 var port = 3000;
@@ -56,6 +58,8 @@ app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 // 아래와 같이 하면 routes 디렉토리 하위의 파일 내용을 웹 상에서 전부 볼 수 있게 됨
 // app.use('/routes', express.static('routes'));
+
+app.use('/static', express.static('static'));
 
 // session 관련 셋팅
 /*app.use(session({
@@ -100,11 +104,14 @@ app.use(function(req, res, next) {
     next();
 });
 
+// 순서 바뀌어도 작동 잘 됨 but 가독성을 위해 '/'를 위나 아래에 넣는게 좋겠다.
 app.use('/admin', admin);
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);
 app.use('/auth', auth);
 app.use('/chat', chat);
+app.use('/products', products);
+app.use('/cart', cart);
 app.use('/', home);
 
 // app.get('/', function(req, res){

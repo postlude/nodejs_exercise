@@ -4,6 +4,7 @@ var ProductsModel = require('../models/ProductsModel');
 var CommentsModel = require('../models/CommentsModel');
 var loginRequired = require('../libs/loginRequired');
 var co = require('co');
+var paginate = require('express-paginate');
 
 // csrf 셋팅
 var csrf = require('csurf');
@@ -45,6 +46,7 @@ router.get('/', function(req, res){
 });
 
 // router.get('/products', loginRequired, testMiddleWare, function(req, res){
+/*
 router.get('/products', function(req, res){
     // res.send('admin product');
 
@@ -55,6 +57,28 @@ router.get('/products', function(req, res){
     ProductsModel.find(function(err, products){
         res.render('admin/products', {products : products});
     });
+});
+*/
+
+// 한 페이지에 보일 개수 : 3, 최대 개수 : 50
+router.get('/products', paginate.middleware(3, 50), async (req,res) => {
+
+    const [ results, itemCount ] = await Promise.all([
+        // ProductsModel.find().limit(req.query.limit).skip(req.skip).exec(),
+        ProductsModel.find().sort('-created_at').limit(req.query.limit).skip(req.skip).exec(),
+        ProductsModel.count({})
+    ]);
+    const pageCount = Math.ceil(itemCount / req.query.limit);
+    
+    // 4 : 한 번에 보일 페이지 개수(1~4, 5~8..)
+    const pages = paginate.getArrayPages(req)( 4 , pageCount, req.query.page);
+
+    res.render('admin/products', { 
+        products : results , 
+        pages: pages,
+        pageCount : pageCount,
+    });
+
 });
 
 // write
@@ -122,6 +146,8 @@ router.get('/products/detail/:id', function(req, res){
     */
     var getData = async () => {
         return {
+            // exec() 안해도 이 코드에서는 돌아간다. but 해주는게 좋음
+            // react? 에서는 안해주면 에러남
             product : await ProductsModel.findOne({'id' :  req.params.id}).exec(),
             comments : await CommentsModel.find({product_id : req.params.id}).exec()
         };
@@ -190,6 +216,11 @@ router.post('/products/ajax_comment/delete', function(req, res){
     CommentsModel.remove({id : req.body.comment_id}, function(err){
         res.json({message : "success"});
     });
+});
+
+// summernote
+router.post('/products/ajax_summernote', loginRequired, upload.single('thumbnail'), function(req, res){
+    res.send('/uploads/' + req.file.filename);
 });
 
 module.exports = router;
