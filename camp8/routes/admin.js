@@ -120,7 +120,7 @@ router.get('/products/detail/:id', function(req, res){
         res.render('admin/productsDetail', { product: result.product, comments : result.comments});
     });
     */
-   var getData = async () => {
+    var getData = async () => {
         return {
             product : await ProductsModel.findOne({'id' :  req.params.id}).exec(),
             comments : await CommentsModel.find({product_id : req.params.id}).exec()

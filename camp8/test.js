@@ -73,7 +73,7 @@ var p1 = new Promise(
         //0.5초 뒤에 콘솔에 찍습니다.
         setTimeout(
             function() {
-                resolve({ p1 : "^_^" });
+                resolve({ p1result : "p1" });
             }, 500 );
     }
 );
@@ -85,7 +85,7 @@ var p2 = new Promise(
         //0.3초 뒤에 콘솔에 찍습니다.
         setTimeout(
             function() {
-                resolve({ p2 : "-_-" });
+                resolve({ p2result : "p2" });
             }, 300 );
     }
 );
@@ -94,13 +94,13 @@ var p2 = new Promise(
 // 배열 순서 바꿔봤자 순서 안바뀜
 Promise.all([p1,p2]).then( (result) =>{
     console.log(result);
-    console.log( "p1 = " + result[0].p1);
-    console.log( "p2 = " + result[1].p2);
+    console.log( "p1 = " + result[0].p1result);
+    console.log( "p2 = " + result[1].p2result);
 });
 */
 
 function* iterFunc(){
-    // console.log('not yield');
+    console.log('not yield');
     yield console.log('1');
     yield console.log('2');
     yield console.log('3');
