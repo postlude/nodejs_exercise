@@ -37,6 +37,7 @@ var home = require('./routes/home');
 var chat = require('./routes/chat');
 var products = require('./routes/products');
 var cart = require('./routes/cart');
+var checkout = require('./routes/checkout');
 
 var app = express();
 var port = 3000;
@@ -105,6 +106,7 @@ app.use(function(req, res, next) {
 });
 
 // 순서 바뀌어도 작동 잘 됨 but 가독성을 위해 '/'를 위나 아래에 넣는게 좋겠다.
+app.use('/', home);
 app.use('/admin', admin);
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);
@@ -112,7 +114,7 @@ app.use('/auth', auth);
 app.use('/chat', chat);
 app.use('/products', products);
 app.use('/cart', cart);
-app.use('/', home);
+app.use('/checkout', checkout);
 
 // app.get('/', function(req, res){
 //     res.send('first edit');
