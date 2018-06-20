@@ -60,25 +60,25 @@ router.get('/products', function(req, res){
 });
 */
 
-// 한 페이지에 보일 개수 : 3, 최대 개수 : 50
+// 한 페이지에 보일 레코드 개수 : 3, 최대 개수 : 50
 router.get('/products', paginate.middleware(3, 50), async (req,res) => {
-
     const [ results, itemCount ] = await Promise.all([
         // ProductsModel.find().limit(req.query.limit).skip(req.skip).exec(),
         ProductsModel.find().sort('-created_at').limit(req.query.limit).skip(req.skip).exec(),
         ProductsModel.count({})
     ]);
+    // 전체 페이지 수
     const pageCount = Math.ceil(itemCount / req.query.limit);
     
     // 4 : 한 번에 보일 페이지 개수(1~4, 5~8..)
-    const pages = paginate.getArrayPages(req)( 4 , pageCount, req.query.page);
+    const pages = paginate.getArrayPages(req)(4, pageCount, req.query.page);
+    // console.log(pages);
 
     res.render('admin/products', { 
-        products : results , 
+        products : results,
         pages: pages,
         pageCount : pageCount,
     });
-
 });
 
 // write
