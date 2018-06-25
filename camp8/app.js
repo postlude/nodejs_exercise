@@ -100,13 +100,18 @@ app.use(flash());
 app.use(function(req, res, next) {
     app.locals.isLogin = req.isAuthenticated();
     // app.locals.myname = "한승덕";
+    
+    // header.ejs에서 class="active" 바꿔주는 용도로 사용
     // app.locals.urlparameter = req.url; // 현재 url 정보를 보내고 싶으면 이와같이 셋팅
-    // app.locals.userData = req.user; // 사용 정보를 보내고 싶으면 이와같이 셋팅
+    app.locals.userData = req.user; // 사용 정보를 보내고 싶으면 이와같이 셋팅
     next();
 });
 
 // 순서 바뀌어도 작동 잘 됨 but 가독성을 위해 '/'를 위나 아래에 넣는게 좋겠다.
 app.use('/', home);
+// 아래와 같은 방법처럼 전역으로 걸어주는 것도 가능하나 하나씩 걸어주는게 좋음
+// var adminRequired = require('./libs/adminRequired');
+// app.use('/admin', adminRequired, admin);
 app.use('/admin', admin);
 app.use('/contacts', contacts);
 app.use('/accounts', accounts);

@@ -78,6 +78,7 @@ passport.use(new LocalStrategy({
 // ));
 
 // login
+// 로그인 된 상태면 아예 다른 곳으로 접근 되도록 미들웨어 걸어주는 게 좋음
 router.get('/login', function(req, res){
     res.render('accounts/login', { flashMessage : req.flash().error });
 });

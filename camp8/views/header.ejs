@@ -35,7 +35,10 @@
                         <li class="active">
                             <a href="/">Home</a>
                         </li>
-                        <li><a href="/admin/products">ADMIN</a></li>
+                        <!-- 로그인 되어 있지 않은 상태를 체크 하기 위해 undefined 체크 -->
+                        <% if(typeof(userData)!=='undefined' && userData.username==='admin1'){ %>
+                            <li><a href="/admin/products">ADMIN</a></li>
+                        <% } %>
                         <li><a href="/cart">CART</a></li>
                         <li><a href="/chat">CHAT</a></li>
                         <% if(isLogin){%>
@@ -44,6 +47,9 @@
                             <li><a href="/accounts/join">JOIN</a></li> 
                             <li><a href="/accounts/login">LOGIN</a></li>  
                         <%}%>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/checkout/nomember">구매조회</a></li> 
                     </ul> 
                 </div> 
             </div> 

@@ -2,6 +2,12 @@ var express = require('express');
 var router = express.Router();
 var CheckoutModel = require('../models/CheckoutModel');
 
+const { Iamporter, IamporterError } = require('iamporter');
+const iamporter = new Iamporter({
+    apiKey: '3719185323074296',
+    secret: 'rqJfPXw9KE4RsBcHVcsptp6js2mklCdN3W3SUz2Ee7vHIIpDVS3oh9HKc44xHhkKenD9XGNbNjSv1i9W'
+});
+
 router.get('/' , function(req, res){
     var totalAmount = 0; // 총결제금액
     var cartList = {}; // 장바구니 리스트
@@ -21,6 +27,29 @@ router.get('/' , function(req, res){
         }
     }
     res.render('checkout/index', { cartList : cartList , totalAmount : totalAmount } );
+});
+
+// complete
+router.get('/complete', async(req, res) => {
+    var payData = await iamporter.findByImpUid(req.query.imp_uid);
+    console.log(payData);
+
+    var checkout = new CheckoutModel({
+        imp_uid : payData.data.imp_uid,
+        merchant_uid : payData.data.merchant_uid,
+        paid_amount : payData.data.amount,
+        apply_num : payData.data.apply_num,
+
+        buyer_email : payData.data.buyer_email,
+        buyer_name : payData.data.buyer_name,
+        buyer_tel : payData.data.buyer_tel,
+        buyer_addr : payData.data.buyer_addr,
+        buyer_postcode : payData.data.buyer_postcode,
+
+        status : "결제완료"
+    });
+    await checkout.save();
+    res.redirect('/checkout/success');
 });
 
 router.post('/complete', (req,res) => {
@@ -67,6 +96,16 @@ router.post('/mobile_complete', (req,res)=>{
 
 router.get('/success', function(req, res){
     res.render('checkout/success');
+});
+
+router.get('/nomember', function(req, res){
+    res.render('checkout/nomember');
+});
+
+router.get('/nomember/search', function(req, res){
+    CheckoutModel.find({buyer_email : req.query.email}, function(err, checkoutList){
+        res.render('checkout/search', {checkoutList : checkoutList});
+    });
 });
 
 module.exports = router;
