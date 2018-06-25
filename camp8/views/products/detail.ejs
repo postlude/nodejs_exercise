@@ -138,6 +138,9 @@ $(document).ready(function(){
                 name : name,
             };
             
+            // console.log(cartList);
+            // console.log(JSON.stringify(cartList));
+
             // string으로 저장되는데 나중에 {}형식으로 받기위해 stringfy로 저장
             // 3시간짜리 쿠키
             setCookieHour( "cartList" , JSON.stringify(cartList) , 3 );
