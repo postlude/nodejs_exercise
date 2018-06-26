@@ -32,7 +32,7 @@ router.get('/' , function(req, res){
 // complete
 router.get('/complete', async(req, res) => {
     var payData = await iamporter.findByImpUid(req.query.imp_uid);
-    console.log(payData);
+    // console.log(payData);
 
     var checkout = new CheckoutModel({
         imp_uid : payData.data.imp_uid,

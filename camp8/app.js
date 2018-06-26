@@ -102,7 +102,8 @@ app.use(function(req, res, next) {
     // app.locals.myname = "한승덕";
     
     // header.ejs에서 class="active" 바꿔주는 용도로 사용
-    // app.locals.urlparameter = req.url; // 현재 url 정보를 보내고 싶으면 이와같이 셋팅
+    app.locals.urlparameter = req.url; // 현재 url 정보를 보내고 싶으면 이와같이 셋팅
+    // console.log('req.url : ' + req.url);
     app.locals.userData = req.user; // 사용 정보를 보내고 싶으면 이와같이 셋팅
     next();
 });
