@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function RedCar(){
+            this.color = "red";
+        }
+        RedCar.prototype.move = function(){
+            console.log(this.color + " is move(red)");
+        }
+
+        function BlueCar(){
+            this.color = "blue";
+        }
+        BlueCar.prototype.move = function(){
+            console.log(this.color + " is move(blue)");
+        }
+
+        var mycar = new RedCar();
+        // __proto__ : prototype 바꿀때 사용
+        mycar.__proto__ = BlueCar.prototype;
+        // BlueCar의 property로 작성하고 싶으면 아래 코드 실행
+        // BlueCar.call(mycar);
+        mycar.move();
+    </script>
+</body>
+</html>

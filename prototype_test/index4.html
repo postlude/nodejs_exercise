@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // call
+        // function Person(name, title){
+        //     this.name = name;
+        //     this.title = title;
+        // }
+        // var man = {};
+        // Person.call(man, "me", "subject"); // 인자를 나열할시
+        // console.log(man.name);
+
+        // apply
+        // function Person(name,title){
+        //     this.name = name;
+        //     this.title = title;
+        // }
+        // var man = {};
+        // Person.apply(man, ["m2e", "hello" ]); // 인자를 배열로
+        // console.log(man.name);
+
+        function Car(){
+            this.name = "hyundai";
+            this.color = "red";
+        }
+        Car.prototype.move = function(){
+            console.log( "Car is " + this.color );
+        };
+
+        var subCar = Object.create( Car.prototype );
+        Car.call( subCar );  
+        subCar.move();
+
+    </script>
+</body>
+</html>

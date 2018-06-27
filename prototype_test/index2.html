@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>CSS수업</title>
+</head>
+<body>
+
+    <div id="clickDiv">
+        글자색 변환
+    </div>
+<script
+  src="https://code.jquery.com/jquery-2.2.4.min.js"
+  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+(function($){
+    $.fn.changeColor = function(){
+        $(this).css('color', "red");
+    };
+    $(document).ready(function() {
+        $('#clickDiv').changeColor();
+    });
+})(jQuery);
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Car(){
+            this.name = "Car";
+        }
+        Car.prototype.move = function(){
+            console.log( this.name + " move" );
+        }
+        //택시 상속
+        function Taxi(){
+            Car.call(this);
+        }
+        Taxi.prototype = Car.prototype;
+
+        var mycar = Object.create(Taxi.prototype);
+        Taxi.call(mycar);
+        mycar.move();
+
+        console.log(Car.prototype.isPrototypeOf(mycar));
+    </script>
+</body>
+</html>

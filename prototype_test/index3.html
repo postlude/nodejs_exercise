@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Car(){
+            this.name = "내차";
+            this.title = "타이틀";
+        }
+        Car.prototype.move = function(){
+            console.log(this.name + " 이동");
+        }
+
+        // var myCar = Object.create(Car.prototype, {
+        //     name : {
+        //         value : "나의 차", // 초기값
+        //         writable : true // 쓰기 속성
+        //     }
+        // });
+
+        var myCar = Object.create(Car.prototype);
+        Object.defineProperties(myCar, {
+            name : {
+                value : "myCar",
+                writable : true
+            },
+            title : {
+                value : "title222",
+                writable : true
+            }
+        });
+        myCar.move(); // undefined
+        console.log(myCar.title);
+    </script>
+</body>
+</html>
