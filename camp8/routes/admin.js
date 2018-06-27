@@ -240,14 +240,17 @@ router.get('/order/edit/:id', function(req,res){
 
 // statistics
 
-router.get('/statistics', adminRequired, function(req, res){
+router.get('/statistics', adminRequired, function(req, res) {
     CheckoutModel.find(function(err, orderList){
         var barData = []; // 넘겨줄 막대그래프 데이터 초기값 선언
         var pieData = []; // 원차트에 넣어줄 데이터 삽입
-        orderList.forEach(function(order){
+        orderList.forEach(function(order) {
             // 08-10 형식으로 날짜를 받아온다
             var date = new Date(order.created_at);
             var monthDay = (date.getMonth()+1) + '-' + date.getDate();
+
+            // var test = order.getDate.month + '-' + order.getDate.day;
+            // console.log(test);
 
             // 날짜에 해당하는 키값으로 조회
             if(monthDay in barData){
@@ -263,7 +266,7 @@ router.get('/statistics', adminRequired, function(req, res){
                 pieData[order.status] = 1;
             }
         });
-        res.render('admin/statistics', { barData : barData , pieData:pieData });
+        res.render('admin/statistics', {barData : barData, pieData : pieData});
     });
 });
 

@@ -8,7 +8,7 @@ const iamporter = new Iamporter({
     secret: 'rqJfPXw9KE4RsBcHVcsptp6js2mklCdN3W3SUz2Ee7vHIIpDVS3oh9HKc44xHhkKenD9XGNbNjSv1i9W'
 });
 
-router.get('/' , function(req, res){
+router.get('/', function(req, res) {
     var totalAmount = 0; // 총결제금액
     var cartList = {}; // 장바구니 리스트
 
