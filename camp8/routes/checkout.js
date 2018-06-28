@@ -119,6 +119,7 @@ router.get('/shipping/:invc_no', (req,res) => {
     request(url, (error, response, body) => {  
         // decodeEntities: false : 한글 변환
         var $ = cheerio.load(body, { decodeEntities: false });
+        // var $ = cheerio.load(body);
 
         var tdElements = $(".board_area").find("table.mb15 tbody tr td"); // td의 데이터를 전부 긁어온다
         // console.log(tdElements[0].children[0].data);
@@ -128,10 +129,11 @@ router.get('/shipping/:invc_no', (req,res) => {
 
         // 한 row가 4개의 칼럼으로 이루어져 있으므로
         // 4로 나눠서 각각의 줄을 저장한 한줄을 만든다
+        var temp = {};
         for(var i=0; i<tdElements.length; i++){
             if(i%4 === 0){
                 // 임시로 한줄을 담을 변수
-                var temp = {};
+                // var temp = {};
                 temp["step"] = removeEmpty(tdElements[i].children[0].data);
             }else if(i%4 === 1){
                 temp["date"] = tdElements[i].children[0].data;
