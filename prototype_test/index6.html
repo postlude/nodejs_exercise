@@ -14,7 +14,8 @@
         Car.prototype.move = function(){
             console.log( this.name + " move" );
         }
-        //택시 상속
+
+        // 택시 상속
         function Taxi(){
             Car.call(this);
         }
@@ -22,9 +23,9 @@
 
         var mycar = Object.create(Taxi.prototype);
         Taxi.call(mycar);
-        mycar.move();
 
-        console.log(Car.prototype.isPrototypeOf(mycar));
+        mycar.move(); // Car move
+        console.log(Car.prototype.isPrototypeOf(mycar)); // true
     </script>
 </body>
 </html>

@@ -22,5 +22,7 @@ var Car = require('./Car');
 // prototype 설정
 var myCar = Object.create(Car.prototype);
 
+myCar.log();
+
 Car.call(myCar);
 myCar.log();
