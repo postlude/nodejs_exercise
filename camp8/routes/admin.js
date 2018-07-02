@@ -250,7 +250,7 @@ router.post('/order/edit/:id', adminRequired, function(req, res) {
 });
 
 // statistics
-
+/*
 router.get('/statistics', adminRequired, function(req, res) {
     CheckoutModel.find(function(err, orderList){
         var barData = []; // 넘겨줄 막대그래프 데이터 초기값 선언
@@ -280,32 +280,49 @@ router.get('/statistics', adminRequired, function(req, res) {
         res.render('admin/statistics', {barData : barData, pieData : pieData});
     });
 });
+*/
 
-// router.get('/statistics', adminRequired, async(req,res) => {
+router.get('/statistics', adminRequired, async(req,res) => {
 
-//     // 년-월-일 을 키값으로 몇명이 결제했는지 확인한다
-//     // barData._id.count 결제자수에 접근
-//     var barData = await 
-//         CheckoutModel.aggregate(
-//             [ 
-//                 { $sort : { created_at : -1 } },
-//                 { 
-//                     $group : {  
-//                         _id : { 
-//                             year: { $year: "$created_at" },
-//                             month: { $month: "$created_at" }, 
-//                             day: { $dayOfMonth: "$created_at" }
-//                         }, 
-//                         count: { $sum: 1 } 
-//                     } 
-//                 } 
-//             ]
-//         ).exec()
+    // 년-월-일 을 키값으로 몇명이 결제했는지 확인한다
+    // barData._id.count 결제자수에 접근
+    var barData = [];
+    var cursor = CheckoutModel.aggregate(
+            [ 
+                { $sort : { created_at : -1 } },
+                { 
+                    $group : {  
+                        _id : { 
+                            year: { $year: "$created_at" },
+                            month: { $month: "$created_at" }, 
+                            day: { $dayOfMonth: "$created_at" }
+                        }, 
+                        count: { $sum: 1 } 
+                    } 
+                } 
+            ]
+        ).cursor({ batchSize: 1000 }).exec(); // batchSize: 1000 : 작동 안함 없어도 돌아감
 
-//     // 배송중, 배송완료, 결제완료자 수로 묶는다
-//     var pieData = await CheckoutModel.aggregate([ 
-//         { $group : { _id : "$status", count: { $sum: 1 } } } ]).exec()
-//     res.render('admin/statistics' , { barData : barData , pieData:pieData });
+    // 반복문 돌리는데 promise를 받기 위해 .each 아닌 .eachAsync
+    await cursor.eachAsync(function(doc) {
+        if(doc !== null){
+            barData.push(doc)
+        }
+    });
+
+    var pieData = [];
+    // 배송중, 배송완료, 결제완료자 수로 묶는다
+    var cursor = CheckoutModel.aggregate([ 
+        { $group : { _id : "$status", count: { $sum: 1 } } } ])
+        .cursor({ batchSize: 1000 }).exec();
     
-// });
+    await cursor.eachAsync(function(doc) {
+        if(doc !== null){
+            pieData.push(doc)
+        }
+    });
+
+    res.render('admin/statistics' , { barData : barData , pieData:pieData });
+    
+});
 module.exports = router;

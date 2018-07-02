@@ -18,6 +18,7 @@ passport.use(new FacebookStrategy({
         clientID : "2065577683682157",
         clientSecret : "7feb6db1b3fc0312f3db318d2de2fbef",
         callbackURL : "https://localhost:3000/auth/facebook/callback",
+        // callbackURL : "ec2-13-209-21-99.ap-northeast-2.compute.amazonaws.com/auth/facebook/callback",
         profileFields : ['id', 'displayName', 'photos', 'email'] // 받고 싶은 필드 나열
     },
     function(accessToken, refreshToken, profile, done) {
@@ -75,6 +76,7 @@ passport.use(new GitHubStrategy({
         clientID: "95d7afc8da3ffc6be568",
         clientSecret: "aaef5cbe9e87214e28f565f99e4f452ef4c73e08",
         callbackURL: "http://localhost:3000/auth/github/callback"
+        // callbackURL: "ec2-13-209-21-99.ap-northeast-2.compute.amazonaws.com/auth/github/callback"
     },
     function(accessToken, refreshToken, profile, done) {
         // console.log(profile);
