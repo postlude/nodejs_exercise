@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "windows_prod": "set NODE_ENV=production&&nodemon ./app.js",
+    "linux_prod": "NODE_ENV=production nodemon ./app.js"
   },
   "author": "",
   "license": "ISC",
