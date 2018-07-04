@@ -25,6 +25,8 @@ db.once('open', function(){
     console.log('mongodb connect');
 });
 var connect = mongoose.connect('mongodb://127.0.0.1:27017/fastcampus', { useMongoClient: true });
+// docker container 용 url
+// var connect = mongoose.connect('mongodb://db_url/fastcampus', { useMongoClient: true });
 autoIncrement.initialize(connect);
 
 
