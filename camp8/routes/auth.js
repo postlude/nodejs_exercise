@@ -4,6 +4,8 @@ var UserModel = require('../models/UserModel');
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GitHubStrategy = require('passport-github').Strategy;
+// 환경 설정 파일
+require('dotenv').config();
 
 passport.serializeUser(function(user, done){
     done(null, user);
@@ -15,10 +17,12 @@ passport.deserializeUser(function(user, done){
 
 passport.use(new FacebookStrategy({
         // https://developer.facebook.com에서 appId, secretId 발급
-        clientID : "2065577683682157",
-        clientSecret : "7feb6db1b3fc0312f3db318d2de2fbef",
-        callbackURL : "https://localhost:3000/auth/facebook/callback",
-        // callbackURL : "https://ec2-13-209-21-99.ap-northeast-2.compute.amazonaws.com/auth/facebook/callback",
+        clientID : process.env.DEV_FACEBOOK_CLIENT_ID,
+        clientSecret : process.env.DEV_FACEBOOK_CLIENT_SECRET,
+        callbackURL : process.env.DEV_FACEBOOK_CALLBACK_URL,
+        // clientID : process.env.PROD_FACEBOOK_CLIENT_ID,
+        // clientSecret : process.env.PROD_FACEBOOK_CLIENT_SECRET,
+        // callbackURL : process.env.PROD_FACEBOOK_CALLBACK_URL,
         profileFields : ['id', 'displayName', 'photos', 'email'] // 받고 싶은 필드 나열
     },
     function(accessToken, refreshToken, profile, done) {
@@ -73,10 +77,12 @@ router.get('/facebook/fail', function(req,res){
 
 // github login
 passport.use(new GitHubStrategy({
-        clientID: "95d7afc8da3ffc6be568",
-        clientSecret: "aaef5cbe9e87214e28f565f99e4f452ef4c73e08",
-        callbackURL: "http://localhost:3000/auth/github/callback"
-        // callbackURL: "https://ec2-13-209-21-99.ap-northeast-2.compute.amazonaws.com/auth/github/callback"
+        clientID : process.env.DEV_GITHUB_CLIENT_ID,
+        clientSecret : process.env.DEV_GITHUB_CLIENT_SECRET,
+        callbackURL : process.env.DEV_GITHUB_CALLBACK_URL,
+        // clientID : process.env.PROD_GITHUB_CLIENT_ID,
+        // clientSecret : process.env.PROD_GITHUB_CLIENT_SECRET,
+        // callbackURL : process.env.PROD_GITHUB_CALLBACK_URL,
     },
     function(accessToken, refreshToken, profile, done) {
         // console.log(profile);
