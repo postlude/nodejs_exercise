@@ -21,9 +21,21 @@ router.post('/join', function(req, res){
         displayname : req.body.displayname
     });
 
-    User.save(function(err){
-        res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
+    // 중복된 id로는 회원 가입 불가
+    UserModel.findOne({username : User.username}, function(err, existUser){
+        if(!existUser){
+            User.save(function(err){
+                res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
+            });
+        }else{
+            // res.send('join fail');
+            res.render('accounts/join', { flashMessage : '이미 존재하는 id입니다.' });
+        }
     });
+
+    // User.save(function(err){
+    //     res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
+    // });
 });
 
 // passport
@@ -83,7 +95,7 @@ router.get('/login', function(req, res){
     res.render('accounts/login', { flashMessage : req.flash().error });
 });
 
-router.post('/login' , 
+router.post('/login', 
     passport.authenticate('local', { 
         failureRedirect: '/accounts/login', 
         failureFlash: true
