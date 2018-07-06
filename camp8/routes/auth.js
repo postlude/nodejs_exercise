@@ -66,9 +66,9 @@ router.get('/facebook/callback',
 );
 
 // 로그인 성공시 이동할 주소
-router.get('/facebook/success', function(req,res){
-    res.send(req.user);
-});
+// router.get('/facebook/success', function(req,res){
+//     res.send(req.user);
+// });
 
 router.get('/facebook/fail', function(req,res){
     res.send('facebook login fail');
@@ -117,10 +117,10 @@ router.get('/github/callback',
     )
 );
 
-router.get('/github/success', function(req, res){
-    res.send(req.user);
-    // res.send("github login success");
-});
+// router.get('/github/success', function(req, res){
+//     res.send(req.user);
+//     // res.send("github login success");
+// });
 
 router.get('/github/fail', function(req, res){
     res.send('github login fail');

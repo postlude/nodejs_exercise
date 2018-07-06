@@ -4,13 +4,14 @@ var UserModel = require('../models/UserModel');
 var passwordHash = require('../libs/passwordHash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var alreadyLogin = require('../libs/alreadyLogin');
 
 router.get('/', function(req, res){
     res.send('account app');
 });
 
 // join
-router.get('/join', function(req, res){
+router.get('/join', alreadyLogin, function(req, res){
     res.render('accounts/join');
 });
 
@@ -91,7 +92,7 @@ passport.use(new LocalStrategy({
 
 // login
 // 로그인 된 상태면 아예 다른 곳으로 접근 되도록 미들웨어 걸어주는 게 좋음
-router.get('/login', function(req, res){
+router.get('/login', alreadyLogin, function(req, res){
     res.render('accounts/login', { flashMessage : req.flash().error });
 });
 
@@ -106,9 +107,9 @@ router.post('/login',
     }
 );
 
-router.get('/success', function(req, res){
-    res.send(req.user);
-});
+// router.get('/success', function(req, res){
+//     res.send(req.user);
+// });
 
 router.get('/logout', function(req, res){
     req.logout();
