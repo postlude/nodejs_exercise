@@ -113,6 +113,8 @@ router.post('/login',
 
 router.get('/logout', function(req, res){
     req.logout();
+    // 다른 사용자로 로그인할 때 같은 장바구니 내용을 보이지 않게 하기 위해 쿠키 삭제
+    res.clearCookie('cartList');
     res.redirect('/accounts/login');
 });
 
