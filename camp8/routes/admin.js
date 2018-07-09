@@ -148,7 +148,8 @@ router.get('/products/detail/:id', function(req, res){
     */
     var getData = async () => {
         return {
-            // exec() 안해도 이 코드에서는 돌아간다. but 해주는게 좋음
+            // exec() 안해도 이 코드에서는 돌아간다.
+            // 몽구스 는 4 버전부터 쿼리가 프로미스를 지원합니다. 3버전까지는 쿼리를 프로미스로 만들기 위해서 뒤에 exec()을 붙여주어야 했습니다. 4버전부터는 필요하지 않습니다.
             // react? 에서는 안해주면 에러남
             product : await ProductsModel.findOne({'id' :  req.params.id}).exec(),
             comments : await CommentsModel.find({product_id : req.params.id}).exec()
