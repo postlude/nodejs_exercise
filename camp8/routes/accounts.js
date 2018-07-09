@@ -53,7 +53,7 @@ router.post('/join', function(req, res){
     };
 
     join().then(function(result){
-        // console.log(result.saveResult);
+        // console.log(result.saveUser);
         // 중복된 id로는 회원 가입 불가
         if(result.existUser){
             UserModel.deleteOne({id : result.saveUser.id}, function(err){
