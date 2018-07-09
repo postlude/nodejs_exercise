@@ -36,8 +36,9 @@ passport.use(new FacebookStrategy({
             if(!user){ // 없으면 회원가입 후 로그인 성공페이지 이동
                 var regData = { // db에 등록 및 세션에 등록될 데이터
                     username : "fb_" + profile.id,
-                    password : "facebook_login", // 이렇게 두면 안되고 모델에 타입을 하나 추가하는 식으로 해야 됨
-                    // 지금과 같은 식이면 아이디에 페북 아이디, 비번에 facebook_login 치면 로그인 됨
+                    password : "facebook_login",
+                    // 아이디에 페북 아이디, 비번에 facebook_login 으로 시도해도 로그인 안됨
+                    // 일반 로그인시 입력한 pw 값을 암호화한 후에 db에서 찾기 때문에 facebook_login이라는 pw를 찾을 수 없음
                     displayname : profile.displayName
                 };
                 var User = new UserModel(regData);
@@ -91,7 +92,7 @@ passport.use(new GitHubStrategy({
             if(!user){ // 없으면 회원가입 후 로그인 성공페이지 이동
                 var regData = { // db에 등록 및 세션에 등록될 데이터
                     username : "gh_" + profile.id,
-                    password : "github_login", // 이렇게 두면 안되고 모델에 타입을 하나 추가하는 식으로 해야 됨
+                    password : "github_login",
                     displayname : profile.username
                 };
                 var User = new UserModel(regData);
