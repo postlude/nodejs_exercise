@@ -39,6 +39,7 @@ router.post('/join', function(req, res){
     // });
 });
 */
+/*
 router.post('/join', function(req, res){
     var User = new UserModel({
         username : req.body.username,
@@ -64,6 +65,23 @@ router.post('/join', function(req, res){
             res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
         }
     });
+});
+*/
+router.post('/join', async(req, res) => {
+    var User = new UserModel({
+        username : req.body.username,
+        password : passwordHash(req.body.password),
+        displayname : req.body.displayname
+    });
+
+    var existUser = await UserModel.findOne({username : User.username});
+
+    if(existUser){
+        res.render('accounts/join', { flashMessage : '이미 존재하는 id입니다.' });
+    }else{
+        await User.save();
+        res.send('<script>alert("회원가입 성공");location.href="/accounts/login";</script>');
+    }
 });
 
 // passport
